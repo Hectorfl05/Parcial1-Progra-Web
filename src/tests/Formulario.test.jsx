@@ -43,4 +43,6 @@ test('Debe llamar a onLogin y limpiar los campos al hacer submit', async () => {
     codigo: '987654'
   });
 
+  console.log("recibido");
+
 });
