@@ -1,49 +1,52 @@
 import { useState } from "react";
 
 function FormularioLogin({ onLogin = () => {} }) {
-  const [usuario, setUsuario] = useState('');
-  const [contraseña, setContraseña] = useState('');
-  const [codigo, setCodigo] = useState('');
+  const [formData, setFormData] = useState({
+    usuario: '',
+    contraseña: '',
+    codigo: ''
+  });
 
-  const handleChangeUsuario = (e) => setUsuario(e.target.value);
-  const handleChangeContraseña = (e) => setContraseña(e.target.value);
-  const handleChangeCodigo = (e) => setCodigo(e.target.value);
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (usuario && contraseña && codigo) {
-      onLogin({ usuario, contraseña, codigo });
-      // Limpiar campos después del login
-      setUsuario('');
-      setContraseña('');
-      setCodigo('');
+    if (formData.usuario && formData.contraseña && formData.codigo) {
+      onLogin({ ...formData });
+      setFormData({ usuario: '', contraseña: '', codigo: '' });
     }
   };
 
-  const enableButton = usuario && contraseña && codigo;
+  const enableButton = formData.usuario && formData.contraseña && formData.codigo;
 
   return (
     <div className="div-container">
       <form className="form-container" onSubmit={handleSubmit}>
         <input
           type="text"
+          name="usuario"
           placeholder="Usuario"
-          value={usuario}
-          onChange={handleChangeUsuario}
+          value={formData.usuario}
+          onChange={handleChange}
           className="login-input" 
         />
         <input
           type="password"
+          name="contraseña"
           placeholder="Contraseña"
-          value={contraseña}
-          onChange={handleChangeContraseña}
+          value={formData.contraseña}
+          onChange={handleChange}
           className="login-input" 
         />
         <input
           type="number"
+          name="codigo"
           placeholder="Codigo"
-          value={codigo}
-          onChange={handleChangeCodigo}
+          value={formData.codigo}
+          onChange={handleChange}
           className="login-input" 
         />
         <button type="submit" disabled={!enableButton}>
